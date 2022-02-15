@@ -5,6 +5,7 @@ const Accounts = require('./accounts-model');
 router.get('/', (req, res, next) => {
   Accounts.getAll()
     .then(data => {
+      // throw new Error('Hello jeffery'),
       res.json(data);
     })
     .catch(() => {
@@ -60,8 +61,13 @@ router.delete('/:id', checkAccountId, (req, res, next) => {
     })
 })
 
-router.use((err, req, res, next) => { // eslint-disable-line
-  // DO YOUR MAGIC
+// eslint-disable-next-line no-unused-vars
+router.use((err, req, res, next) => { 
+  res.status(err.status || 500).json({
+    custom: 'Error occurred in the accounts-router',
+    message: err.message,
+    stack: err.stack,
+  })
 })
 
 module.exports = router;
